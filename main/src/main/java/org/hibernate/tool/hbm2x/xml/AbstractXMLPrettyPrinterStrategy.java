@@ -19,7 +19,10 @@ import java.io.IOException;
 public abstract class AbstractXMLPrettyPrinterStrategy implements XMLPrettyPrinterStrategy {
 
     protected Document newDocument(String xml, String encoding) throws SAXException, IOException, ParserConfigurationException {
-        final Document document = DocumentBuilderFactory.newInstance()
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setValidating(false);
+        factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+        Document document = factory
                 .newDocumentBuilder()
                 .parse(new InputSource(new ByteArrayInputStream(xml.getBytes(encoding))));
         document.normalize();
